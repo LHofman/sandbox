@@ -1,7 +1,7 @@
 import { link } from 'fs/promises';
 
-const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
-const regex = new RegExp(expression);
+const regex = new RegExp(/^https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi);
+const notAllowedCharactersRegex = new RegExp('[<>@]+');
 
 export default class Link {
   
@@ -12,12 +12,16 @@ export default class Link {
     // 4.2 Failing fast using contracts
     // 4.2.2 Upholding invariants in constructors
 
-    if (!text.match(regex)) {
+    if (text.length > 500) {
+      throw new Error('Link cannot exceed 500 characters');
+    }
+
+    if (text.match(notAllowedCharactersRegex)) {
       throw new Error('Link must be a valid link');
     }
 
-    if (text.length > 500) {
-      throw new Error('Link cannot exceed 500 characters');
+    if (!text.match(regex)) {
+      throw new Error('Link must be a valid link');
     }
   }
 
@@ -25,3 +29,5 @@ export default class Link {
     return this.text === other.text;
   }
 }
+
+export const isLink = (text: string): boolean => !!text.match(regex);

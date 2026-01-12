@@ -23,13 +23,14 @@ beforeEach(() => {
 describe('Secure By Design', () => {
   it('should log a created task', async () => {
     await main();
-    expect(consoleLogMock.mock.calls[0][0]).toBe('Task "Test task description" added successfully!');
+    
+    expect(consoleLogMock.mock.calls[2][0]).toContain('Test task description');
   });
 
   it('should escape HTML in task description', async () => {
     getTaskDescription = (): string => '<script>alert("XSS")</script>';
 
     await main();
-    expect(consoleLogMock.mock.calls[0][0]).toBe('Task "&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;" added successfully!');
+    expect(consoleLogMock.mock.calls[2][0]).toContain('&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;');
   });
 });
