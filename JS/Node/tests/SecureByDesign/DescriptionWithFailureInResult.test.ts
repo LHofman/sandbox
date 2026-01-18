@@ -1,6 +1,6 @@
 import Description from '../../src/SecureByDesign/Description';
 
-describe('Secure By Design > Description', () => {
+describe('Secure By Design > Description With Failure in Result', () => {
   it('should throw error when description is empty', () => {
     expect(() => new Description('')).toThrow('Description cannot be empty');
   });

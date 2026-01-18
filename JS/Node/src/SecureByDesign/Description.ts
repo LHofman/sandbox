@@ -1,3 +1,5 @@
+import InvalidParameterError from './Error/InvalidParameterError';
+
 export default class Description {
   constructor(
     // 4.1 Immutability
@@ -6,11 +8,11 @@ export default class Description {
     // 4.2 Failing fast using contracts
     // 4.2.2 Upholding invariants in constructors
     if (text.length === 0) {
-      throw new Error('Description cannot be empty');
+      throw new InvalidParameterError('Description cannot be empty');
     }
 
     if (text.length > 100) {
-      throw new Error('Description cannot exceed 100 characters');
+      throw new InvalidParameterError('Description cannot exceed 100 characters');
     }
   }
 

@@ -1,4 +1,6 @@
 import type Description from './Description';
+import AddTaskError from './Error/AddTaskError';
+import RemoveTaskError from './Error/RemoveTaskError';
 import type Task from './Task';
 
 export default class TaskList {
@@ -15,11 +17,11 @@ export default class TaskList {
   addTask(task: Task) {
     // 4.2.1 Checking preconditions for method arguments
     if (task.description && this.tasks.find(t => t.description?.equals(task.description!))) {
-      throw new Error('Task with the same description already exists');
+      throw new AddTaskError('Task with the same description already exists');
     }
 
     if (task.link && this.tasks.find(t => t.link?.equals(task.link!))) {
-      throw new Error('Task with the same link already exists');
+      throw new AddTaskError('Task with the same link already exists');
     }
 
     this.tasks.push(task);
@@ -29,7 +31,7 @@ export default class TaskList {
     // 4.2.3 Failing for bad state
     const index = this.tasks.findIndex(t => t.description?.equals(description));
     if (index === -1) {
-      throw new Error('Task not found');
+      throw new RemoveTaskError('Task not found');
     }
 
     this.tasks.splice(index, 1);

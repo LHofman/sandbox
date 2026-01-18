@@ -1,6 +1,15 @@
 import Description from '../../src/SecureByDesign/Description';
 import Link from '../../src/SecureByDesign/Link';
 import Task from '../../src/SecureByDesign/Task';
+import '../../src/SecureByDesign/FeatureFlags';
+
+let featureFlagShouldAllowAddingSubtasks: boolean = false;
+
+jest.mock('../../src/SecureByDesign/FeatureFlags', () => ({
+  get ALLOW_ADDING_SUBTASKS() {
+    return featureFlagShouldAllowAddingSubtasks;
+  }
+}));
 
 describe('Secure By Design > Task', () => {
   it('should create Task when description is valid', () => {
@@ -33,5 +42,28 @@ describe('Secure By Design > Task', () => {
     
     const task = new Task(new Description('Make ToDo List')).withDueDate(futureDate);
     expect(task.getDueDate()).toEqual(futureDate);
+  });
+
+  // 8.3.3 Taming the toggles
+  it('should not allow adding subtasks when feature flag is disabled', () => {
+    featureFlagShouldAllowAddingSubtasks = false;
+
+    const task = new Task(new Description('Make ToDo List'));
+    const subTask = new Task(new Description('Subtask 1'));
+
+    expect(() => {
+      task.addSubTask(subTask);
+    }).toThrow('Adding subtasks is not allowed');
+  });
+
+  it('should allow adding subtasks when feature flag is enabled', () => {
+    featureFlagShouldAllowAddingSubtasks = true;
+
+    const task = new Task(new Description('Make ToDo List'));
+    const subTask = new Task(new Description('Subtask 1'));
+
+    expect(() => {
+      task.addSubTask(subTask);
+    }).not.toThrow('Adding subtasks is not allowed');
   });
 });

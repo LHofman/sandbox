@@ -1,0 +1,1 @@
+export const ALLOW_ADDING_SUBTASKS = false;

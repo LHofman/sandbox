@@ -1,4 +1,6 @@
 import type Description from './Description';
+import InvalidParameterError from './Error/InvalidParameterError';
+import InvalidTaskError from './Error/InvalidTaskError';
 import type Link from './Link';
 
 // 6.2.6 The builder pattern for upholding advanced constraints
@@ -20,7 +22,7 @@ export default class TaskWithBuilder {
 
   setDueDate(dueDate: Date): void {
     if (dueDate < new Date()) {
-      throw new Error('Due date cannot be in the past');
+      throw new InvalidParameterError('Due date cannot be in the past');
     }
     
     this.dueDate = dueDate;
@@ -32,7 +34,7 @@ export default class TaskWithBuilder {
 
   private checkInvariants(): void {
     if (!this.description && !this.link) {
-      throw new Error('Task must have at least a description or a link');
+      throw new InvalidTaskError('Task must have at least a description or a link');
     }
   }
 
@@ -55,3 +57,5 @@ export default class TaskWithBuilder {
     }
   }
 }
+
+const builderClass= TaskWithBuilder.getBuilder();

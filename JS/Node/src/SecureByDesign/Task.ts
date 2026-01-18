@@ -1,8 +1,13 @@
 import type Description from './Description';
+import InvalidParameterError from './Error/InvalidParameterError';
+import InvalidTaskError from './Error/InvalidTaskError';
+import UnavailableFeatureError from './Error/UnavailableFeatureError';
+import { ALLOW_ADDING_SUBTASKS } from './FeatureFlags';
 import type Link from './Link';
 
 export default class Task {
   private dueDate?: Date;
+  private subTasks: Task[] = [];
   
   constructor(
     // 4.1 Immutability
@@ -20,7 +25,7 @@ export default class Task {
   // 6.2.4 Construction with a fluent interface
   withDueDate(dueDate: Date): Task {
     if (dueDate < new Date()) {
-      throw new Error('Due date cannot be in the past');
+      throw new InvalidParameterError('Due date cannot be in the past');
     }
     
     this.dueDate = dueDate;
@@ -31,9 +36,18 @@ export default class Task {
     return this.dueDate;
   }
 
+  addSubTask(subTask: Task): void {
+    // 8.3.3 Taming the toggles
+    if (!ALLOW_ADDING_SUBTASKS) {
+      throw new UnavailableFeatureError('Adding subtasks is not allowed');
+    }
+    
+    this.subTasks.push(subTask);
+  }
+
   private checkInvariants(): void {
     if (!this.description && !this.link) {
-      throw new Error('Task must have at least a description or a link');
+      throw new InvalidTaskError('Task must have at least a description or a link');
     }
   }
 }
