@@ -1,11 +1,11 @@
 import './App.css'
-import { TaskList } from './Components/TaskList'
+import TaskApp from './Components/TaskApp';
 
 function App() {
   return (
     <>
       <div className="card">
-        <TaskList />
+        <TaskApp />
       </div>
     </>
   )

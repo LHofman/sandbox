@@ -1,8 +1,13 @@
+import React from "react";
+import icons from "./icons";
+
 export interface Task {
   id: string;
   description: string;
   isCompleted?: boolean;
   dueDate?: Date;
+  subTasks?: Task[];
+  category?: keyof typeof icons;
 }
 
 interface TaskProps {
@@ -11,12 +16,25 @@ interface TaskProps {
 }
 
 export const Task = (props: TaskProps) => {
-  const { description, isCompleted = false, dueDate } = props.task;
+  const { description, isCompleted = false, dueDate, subTasks } = props.task;
+
+  let iconElement = null;
+  if (props.task.category) {
+    iconElement = React.createElement(icons[props.task.category]);
+  }
 
   return (
-    <p>
-      {description} - {isCompleted ? "✅" : "☑️"} {dueDate && ` (Due: ${dueDate.toLocaleDateString()})`}
-      <button onClick={() => props.onRemove(props.task.id)}>Remove</button>
-    </p>
+    <span>
+      {iconElement} {description} - {isCompleted ? "✅" : "☑️"} {dueDate && ` (Due: ${dueDate.toLocaleDateString()})`}
+      { !!subTasks
+        ? (
+          <ul>
+            { subTasks.map((subTask) => (
+              <li key={subTask.id}><Task task={subTask} onRemove={props.onRemove} /></li>
+            )) }
+          </ul>
+        ) : <button onClick={() => props.onRemove(props.task.id)}>Remove</button>
+      }
+    </span>
   );
 }

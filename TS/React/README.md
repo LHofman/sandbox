@@ -1,7 +1,14 @@
 ## Installation
 
+### Install nvm on windows
+
+https://github.com/coreybutler/nvm-windows/releases
+
+### Install Packages
+
 ```shell
-nvm use 24
+nvm install lts
+nvm use lts
 npm install
 ```
 
