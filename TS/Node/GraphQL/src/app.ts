@@ -97,7 +97,7 @@ interface MyContext {
 
 const resolvers = {
   Query: {
-    tasks: () => tasks,
+    tasks: async () => Promise.resolve(tasks),
     taskList: () => ({ tasks: tasks }),
     example: () => exampleData,
   },
