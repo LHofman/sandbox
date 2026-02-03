@@ -1,5 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import { ApolloServerErrorCode } from '@apollo/server/errors';
+import { GraphQLError } from 'graphql/error';
 
 const typeDefs = `#graphql
   "Description of an example type"
@@ -61,7 +63,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    tasks: [Task]
+    tasks(taskListId: String!): [Task]
     taskList: TaskList
     example: ExampleUnion
   }
@@ -97,7 +99,27 @@ interface MyContext {
 
 const resolvers = {
   Query: {
-    tasks: async () => Promise.resolve(tasks),
+    tasks: async (
+      _: any,
+      { taskListId }: { taskListId: string },
+    ) => {
+      console.log(taskListId);
+      if (taskListId !== 'default') {
+        throw new GraphQLError('Task list not found', {
+          extensions: {
+            code: ApolloServerErrorCode.BAD_USER_INPUT,
+            http: {
+              status: 404,
+              headers: new Map([
+                ['some-header', 'TaskListNotFound'],
+              ]),
+            },
+          },
+        });
+      }
+
+      return Promise.resolve(tasks);
+    },
     taskList: () => ({ tasks: tasks }),
     example: () => exampleData,
   },
@@ -135,6 +157,18 @@ export async function run(): Promise<void> {
   const server = new ApolloServer<MyContext>({
     typeDefs,
     resolvers,
+    formatError(formattedError) {
+      console.log('GraphQL Error:', formattedError);
+
+      if (formattedError.extensions?.code === ApolloServerErrorCode.GRAPHQL_VALIDATION_FAILED) {
+        return {
+          ...formattedError,
+          message: 'There was a validation error in your request.',
+        };
+      }
+
+      return formattedError;
+    },
   });
 
   const { url } = await startStandaloneServer(server, {
