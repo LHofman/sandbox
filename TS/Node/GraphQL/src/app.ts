@@ -91,6 +91,10 @@ const exampleData = {
   color: '#F00'
 };
 
+interface MyContext {
+  token: string | null; 
+}
+
 const resolvers = {
   Query: {
     tasks: () => tasks,
@@ -98,12 +102,20 @@ const resolvers = {
     example: () => exampleData,
   },
   Mutation: {
-    addTask: (_: any, { taskInput }: { taskInput: { description: string } }) => ({
-      code: '200',
-      success: true,
-      message: 'Task added',
-      task: { description: taskInput.description }
-    })
+    addTask: (
+      _: any,
+      { taskInput }: { taskInput: { description: string } },
+      context: MyContext
+    ) => {
+      console.log(context.token);
+
+      return {
+        code: '200',
+        success: true,
+        message: 'Task added',
+        task: { description: taskInput.description },
+      };
+    }
   },
   ExampleUnion: {
     __resolveType(obj: any) {
@@ -120,13 +132,16 @@ const resolvers = {
 };
 
 export async function run(): Promise<void> {
-  const server = new ApolloServer({
+  const server = new ApolloServer<MyContext>({
     typeDefs,
     resolvers,
   });
 
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
+    context: async ({ req }) => ({
+      token: req.headers.authorization || null,
+    }),
   });
 
   console.log(`🚀  Server ready at: ${url}`);
