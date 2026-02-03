@@ -1,4 +1,4 @@
-import { run } from '../src/app';
+import { run } from '../src/Basics-StandaloneServer/app';
 
 
 it('logs Hello World!', () => {

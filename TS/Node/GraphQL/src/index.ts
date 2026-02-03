@@ -1,3 +1,3 @@
-import { run } from './app';
+import { run } from './Basics-StandaloneServer/app';
 
 run();
