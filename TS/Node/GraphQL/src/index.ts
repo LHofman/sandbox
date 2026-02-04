@@ -1,3 +1,3 @@
-import { run } from './ExpressMiddleware/subscriptions';
+import { run } from './StandaloneServer/dataSources';
 
 run();

@@ -27,11 +27,13 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@apollo/datasource-rest": "^6.4.1",
     "@apollo/server": "^5.3.0",
     "@as-integrations/express5": "^1.1.2",
     "@graphql-tools/schema": "^10.0.31",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "dataloader": "^2.2.3",
     "graphql": "^16.12.0",
     "graphql-subscriptions": "^3.0.0",
     "graphql-ws": "^6.0.7"
