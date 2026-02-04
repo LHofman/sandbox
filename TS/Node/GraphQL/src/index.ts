@@ -1,3 +1,3 @@
-import { run } from './ExpressMiddleware/app';
+import { run } from './ExpressMiddleware/subscriptions';
 
 run();
