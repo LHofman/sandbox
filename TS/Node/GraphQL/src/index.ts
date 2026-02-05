@@ -1,3 +1,3 @@
-import { run } from './StandaloneServer/GeneratingTypes/server';
+import { run } from './StandaloneServer/mocking';
 
 run();
