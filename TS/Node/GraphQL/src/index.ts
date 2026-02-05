@@ -1,3 +1,3 @@
-import { run } from './StandaloneServer/dataSources';
+import { run } from './StandaloneServer/GeneratingTypes/server';
 
 run();

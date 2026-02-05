@@ -6,13 +6,17 @@
     "test": "jest",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon --watch src --exec ts-node src/index.ts"
+    "dev": "nodemon --watch src --exec ts-node src/index.ts",
+    "codegen": "graphql-codegen --config src/StandaloneServer/GeneratingTypes/codegen.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@graphql-codegen/cli": "^6.1.1",
+    "@graphql-codegen/typescript": "^5.0.7",
+    "@graphql-codegen/typescript-resolvers": "^5.1.5",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.0.3",
     "@types/ws": "^8.18.1",
