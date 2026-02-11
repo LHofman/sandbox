@@ -3,7 +3,7 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import { ApolloServerErrorCode } from '@apollo/server/errors';
 import { GraphQLError } from 'graphql/error';
 
-const typeDefs = `#graphql
+export const typeDefs = `#graphql
   "Description of an example type"
   type Example {
     """
@@ -97,7 +97,7 @@ interface MyContext {
   token: string | null; 
 }
 
-const resolvers = {
+export const resolvers = {
   Query: {
     tasks: async (
       _: any,
