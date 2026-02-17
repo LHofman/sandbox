@@ -1,3 +1,3 @@
-import { run } from './StandaloneServer/mocking';
+import { run } from './StandaloneServer/basics';
 
 run();

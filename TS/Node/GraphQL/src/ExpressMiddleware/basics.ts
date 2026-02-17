@@ -58,7 +58,7 @@ export async function run(): Promise<void> {
 
   app.use(
     '/graphql',
-    cors<cors.CorsRequest>(),
+    cors<cors.CorsRequest>({ origin: [ 'http://localhost:3000' ], credentials: true }),
     express.json(),
     expressMiddleware(server),
   );

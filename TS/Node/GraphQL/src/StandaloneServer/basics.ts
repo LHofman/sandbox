@@ -103,7 +103,6 @@ export const resolvers = {
       _: any,
       { taskListId }: { taskListId: string },
     ) => {
-      console.log(taskListId);
       if (taskListId !== 'default') {
         throw new GraphQLError('Task list not found', {
           extensions: {
