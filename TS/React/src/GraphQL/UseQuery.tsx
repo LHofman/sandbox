@@ -6,8 +6,8 @@ interface Task {
 }
 
 const QUERY = gql`
-  query GetTaskList {
-    taskList {
+  query GetTaskList($taskListId: String) {
+    taskList(taskListId: $taskListId) {
       tasks {
         description
       }
@@ -16,7 +16,9 @@ const QUERY = gql`
 `;
 
 function UseQuery() {
-  const { loading, error, data } = useQuery<{ taskList: { tasks: Task[] } }>(QUERY);
+  const { loading, error, data } = useQuery<{ taskList: { tasks: Task[] } }>(QUERY, {
+    variables: { taskListId: 'default' },
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
